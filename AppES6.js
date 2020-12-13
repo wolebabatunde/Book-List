@@ -23,7 +23,7 @@ class UI {
         <td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.isbn}</td>
-        <td><a href= '#' class='delete'>X</a></td>
+        <td><a href= '#' class="delete">X</a></td>
         `
 
         // Append Child
@@ -89,6 +89,69 @@ class UI {
 };
 
 
+// LOCAL STORAGE CLASS (Saving and deleting from Local Storage)
+
+class Store {
+
+    // Get book from storage
+    static getBooks() {
+        let books;
+
+        if (localStorage.getItem('books') === null) {
+            books = [];
+        } else {
+            books = JSON.parse(localStorage.getItem('books'));
+        };
+
+        return books;
+
+    }
+
+
+
+    // Display Book from local Storage
+    static displayBooks() {
+        const books = Store.getBooks();
+
+        books.forEach(function (book) {
+
+            const ui = new UI;
+
+            // Add book to UI
+
+            ui.addBookToList(book);
+
+        });
+    }
+
+
+    // Add Book from local storage
+    static addBook(book) {
+
+        const books = Store.getBooks();
+
+        books.push(book);
+
+        localStorage.setItem('books', JSON.stringify(books));
+
+    }
+
+
+    // Delete Book from Local Storage
+    static removeBook() {
+
+    }
+}
+
+
+// This Function will be called after the DOM Event is loaded
+
+// DOM Load Event
+
+document.addEventListener('DOMContentLoaded',
+    Store.displayBooks);
+
+
 // EVENT LISTERNER TO ADD BOOK
 
 document.getElementById('book-form').addEventListener('submit',
@@ -121,6 +184,10 @@ document.getElementById('book-form').addEventListener('submit',
             // ADD BOOK TO LIST
 
             ui.addBookToList(book);
+
+            // ADD TO LOCAL STORAGE
+
+            Store.addBook(book);
 
 
             // SHOW SUCCESS
