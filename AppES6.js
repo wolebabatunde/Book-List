@@ -138,8 +138,18 @@ class Store {
 
 
     // Delete Book from Local Storage
-    static removeBook() {
+    static removeBook(isbn) {
 
+        const books = Store.getBooks();
+
+        books.forEach(function (book, index) {
+            if (book.isbn === isbn) {
+                books.splice(index, 1);
+            }
+
+        });
+
+        localStorage.setItem('books', JSON.stringify(books));
     }
 }
 
@@ -214,6 +224,12 @@ document.getElementById('book-list').addEventListener('click', function (e) {
 
     // DELETE BOOK
     ui.deleteBook(e.target);
+
+    // REMOVE FROM LOCAL STORAGE
+
+    Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+
+
 
     // SHOW ALERT
 
